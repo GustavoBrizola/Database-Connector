@@ -11,7 +11,7 @@ public class QueryOperations
 {  
     // Singleton Pattern structure
     private static QueryOperations operations;
-    private QueryOperations(){}
+    protected QueryOperations(){}
     protected static QueryOperations Get_Instance()
     {
         if(operations == null)
@@ -167,7 +167,7 @@ public class QueryOperations
     {  
         try
         {
-            SetQueryStatement(ConnectionSettings.Get_Instance().GetConnection().createStatement());
+            SetQueryStatement(ConnectorSettings.Get_Instance().GetConnection().createStatement());
             GetQueryStatement().execute(GetQuery()); 
         }
         catch(SQLException e)
@@ -183,18 +183,15 @@ public class QueryOperations
     public void Terminal()
     {
         try
-        {
-            if(GetQueryStatement().getResultSet() != null)
+        {   
+            while(GetQueryStatement().getResultSet().next())
             {
-                while(GetQueryStatement().getResultSet().next())
+                for(int i = 1; i <= GetQueryStatement().getResultSet().getMetaData().getColumnCount(); i++)
                 {
-                    for(int i = 1; i <= GetQueryStatement().getResultSet().getMetaData().getColumnCount(); i++)
-                    {
-                        if(i>1) System.out.print(", ");
-                        System.out.print(GetQueryStatement().getResultSet().getMetaData().getCatalogName(i) + ": " + GetQueryStatement().getResultSet().getString(i));
-                    }   
-                    System.out.println(""); 
-                }
+                    if(i>1) System.out.print(", ");
+                    System.out.print(GetQueryStatement().getResultSet().getMetaData().getCatalogName(i) + ": " + GetQueryStatement().getResultSet().getString(i));
+                }   
+                System.out.println(""); 
             }
         } 
         catch(SQLException e)

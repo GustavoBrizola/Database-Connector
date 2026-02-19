@@ -1,4 +1,4 @@
-# Database Conector
+# Database Connector
 
 Simple Java project that demonstrates connecting to a relational database via JDBC. This repository contains a minimal example showing how to open a JDBC connection modify it and run a query.
 
@@ -25,9 +25,9 @@ This is a Java database connection sample project containing multiple modules th
 To initialize as an object, simply paste the line of code below.
 
 ``` JAVA
-import database.files.Database;
+import database.source.DatabaseConnector;
 
-Database database = new Database(type, protocol, host, database, user, password);
+DatabaseConnector database = new DatabaseConnector(type, protocol, host, database, user, password);
 ```
 dasd
 protocols
@@ -54,7 +54,7 @@ database.Settings.CheckConnection();
 database.Settings.Disconnect();
 
 // Change user credentials. Automatically disconnect to apply changes and reconnect
-database.Settings.ChangeUser(user, password);
+database.Settings.ChangeCredentials(user, password);
 
 // Makes connection
 database.Settings.Connect();
