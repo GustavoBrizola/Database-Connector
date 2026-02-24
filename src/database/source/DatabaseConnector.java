@@ -1,16 +1,14 @@
 /*
 * @author GustavoBrizola
 */
-package database.source; 
+package database.source;
 
 public class DatabaseConnector
 {
-    // Use Singleton Pattern to access all once this class is instantiated
-    public ConnectorSettings settings = ConnectorSettings.Get_Instance();   // Setting object     
-    public QueryOperations operations = QueryOperations.Get_Instance();     // Operation object
-    // public Exports export = Exports.Get_Instance();          // Exports object
-    // public Import import = Import.Get_Instance();            // Import object
-
+    // Instances
+    public Settings settings = Settings.GetInstance();          // Setting Object   Instantiate single 
+    public Query query = Query.GetInstance();                   // Query Object     Instantiate single
+    
     // Constructor
     /***
      * Iniciates link to MySQL Database.

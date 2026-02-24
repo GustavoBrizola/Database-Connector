@@ -5,20 +5,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/*
-* @author GustavoBrizola 
-*/
-public class ConnectorSettings
+public class Settings
 { 
     // Singleton Pattern
-    private static ConnectorSettings settings;
-    private ConnectorSettings(){}
-    protected static ConnectorSettings Get_Instance()
+    private static Settings settings;
+    private Settings(){}
+    protected static Settings GetInstance()
     {
-        if(settings == null)
-        {
-            synchronized(ConnectorSettings.class) {settings = new ConnectorSettings();}
-        }
+        if(settings == null) synchronized(Settings.class) {settings = new Settings();}
         return settings;
     }
 
@@ -61,7 +55,7 @@ public class ConnectorSettings
 
     /* setting Methods */
     // Starts connection session
-    public ConnectorSettings Connect()
+    public Settings Connect()
     {
         // If there's connection, do nothing and returns
         if(CheckConnection()) return this;
@@ -74,23 +68,22 @@ public class ConnectorSettings
         catch (SQLException e) 
         {   
             // FIXME: Catchs exception on first attempt
-            // Recursive ensures connection
             System.err.println("("+e.getErrorCode()+") "+"Connection Failed: "+e.getMessage());
-            Connect();
+            return this;
         }
         return this;
     }
 
     // Ends the current connection
-    public ConnectorSettings Disconnect()
+    public Settings Disconnect()
     {
         // If there's not connection, do nothing and return
         if(!CheckConnection()) return this;
         
         try
         {
-            GetConnection().close();
-            SetConnection(null);
+            GetConnection().close();            // Free resources
+            SetConnection(null);    // Optional
         }
         catch(SQLException e)
         {
@@ -103,8 +96,8 @@ public class ConnectorSettings
     public boolean CheckConnection()
     {
         if(GetConnection() != null)
-        return false;
-        else return true;
+        return true;
+        else return false;
     }
 
     //
