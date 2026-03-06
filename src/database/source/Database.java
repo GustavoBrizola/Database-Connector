@@ -1,14 +1,11 @@
-/*
-* @author GustavoBrizola
-*/
 package database.source;
 
-public class DatabaseConnector
+public class Database
 {
     // Instances
     public Settings settings = Settings.GetInstance();          // Setting Object   Instantiate single 
     public Query query = Query.GetInstance();                   // Query Object     Instantiate single
-    
+
     // Constructor
     /***
      * Iniciates link to MySQL Database.
@@ -16,7 +13,7 @@ public class DatabaseConnector
      * <p>
      * {@code settings} gives change configurations parateters used
      * <P>
-     * {@code operations} Allow create, execute and prints queries.
+     * {@code query} Allow create, execute and prints queries.
      * <P>
      * <strong>NOTE:</strong> To prevent memory leaks, be sure use 
      * {@code settings.Disconnect()} when connection is not necessary.
@@ -30,7 +27,7 @@ public class DatabaseConnector
      * @param password - Authentication password.
      * 
      */
-    public DatabaseConnector(int driver, String host, String port, String database, String user, String password)
+    public Database(int driver, String host, String port, String database, String user, String password)
     {
         // Initizlize all neeeded variables
         settings.SetDriver(driver);

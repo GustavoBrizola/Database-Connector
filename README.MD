@@ -14,8 +14,9 @@ This is a Java database connection sample project containing multiple modules th
 
 ### Modules
 #### Available Modules
-- **Settings**: Core database connection handling and pooling
-- **Operations**: Creates queries, executes and prints on terminal.
+- **Setting**: Core database connection handling and pooling
+- **Query**: Creates queries, executes and prints on terminal.
+
 #### In Development
 - **Export**: Database schema versioning and import utilities
 - **Import**: Database schema versioning and export utilities
@@ -25,16 +26,14 @@ This is a Java database connection sample project containing multiple modules th
 To initialize as an object, simply paste the line of code below.
 
 ``` JAVA
-import database.source.DatabaseConnector;
+import database.source.Database;
 
-DatabaseConnector database = new DatabaseConnector(type, protocol, host, database, user, password);
+Database database = new Database(type, protocol, host, database, user, password);
 ```
-dasd
-protocols
 
 | Parameter     | Description   | Data Type |
 |---            |---            | ---
-| **Type**      | This variable determines witch database engine system the URL protocol will use, along with the host, port and database parameter. For now, only MySQL system is avaiable. Future plans include connect with Postgree and Oracle Database systems.    | Int
+| **Type**      | This variable determines witch database engine system the URL protocol will use, along with the host, port and database parameter.  | Int
 | **Host**      | The server IP address domain.              | String
 | **Port**      | Network port.  | String
 | **Database**  | Database name located for access.                | String
@@ -46,6 +45,7 @@ protocols
 
 ### SQL Settings
 Settings module can be called to modify aspect of the connection. Here some examples.
+
 ``` JAVA
 // Checks if there's connection, return boolean
 database.Settings.CheckConnection();
@@ -53,44 +53,40 @@ database.Settings.CheckConnection();
 // Disconnects from database
 database.Settings.Disconnect();
 
-// Change user credentials. Automatically disconnect to apply changes and reconnect
-database.Settings.ChangeCredentials(user, password);
-
 // Makes connection
 database.Settings.Connect();
 ```
 
 ### SQL Operations
-The operations allow to execute SQL queries. You can run the query and print on terminal separately using **RunQuery()** and **Terminal()**.
-
-> [!IMPORTANT]
-> The project as it is right now, does not prevent against SQL injection in any shape or form. Future development must include PreparedStatement preventions.
+The operations allow to execute SQL queries. You can run and print on terminal separately using **RunQuery()**.
 
 ``` JAVA
 // Select table
-database.Operations
+database.query.NewQuery().command
     .SELECT("*")
-    .FROM("table")
-    .RunQuery()
-    .Terminal();
+    .FROM("table");
+
+database.query.run.RunQuery(true);
 
 // Add rows
 // Only builds the query
-database.operation
+database.query.NewQuery().command
     .INSERT("INTO Table(Columns)")
     .VALUES("(data), (data)");
 
 // Delete database
 // Build, runs the query only
-database.operation
+database.query.NewQuery().command
     .DROP("DATABASE database")
-    .RunQuery();
+
+database.query.run.RunQuery(false);
 
 // Selects table with rules
-database.operation
+database.query.NewQuery().command
     .SELECT("*")
     .FROM("table")
-    .WHERE("Condition")
-    .RunQuery()
-    .Terminal();
+    .WHERE("Condition");
+
+database.query.run.RunQuery(false);
+
 ```

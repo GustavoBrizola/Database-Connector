@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class Settings
 { 
     // Singleton Pattern
+    private Settings() {}
     private static Settings settings;
-    private Settings(){}
     protected static Settings GetInstance()
     {
         if(settings == null) synchronized(Settings.class) {settings = new Settings();}
@@ -62,13 +62,18 @@ public class Settings
 
         try
         {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             SetProtocol("jdbc:mysql://"+ GetHost()+":"+ GetPort() + "/"+ GetDatabase());
             SetConnection(DriverManager.getConnection(GetProtocol(), GetUser(), GetPassword()));
         } 
         catch (SQLException e) 
         {   
-            // FIXME: Catchs exception on first attempt
             System.err.println("("+e.getErrorCode()+") "+"Connection Failed: "+e.getMessage());
+            return this;
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.err.println("MySQL JDBC Driver not found: "+e.getMessage());
             return this;
         }
         return this;
